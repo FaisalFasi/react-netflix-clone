@@ -1,7 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
 import { FaPowerOff, FaSearch, FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../utilities/firebase-configs";
@@ -20,29 +19,27 @@ export default function Navbar({ isScrolled }) {
     { name: "My List", link: "/mylist", disabled: true },
   ];
 
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (!currentUser) navigate("/login");
-  });
-
   useEffect(() => {
-    // Close the search input and reset its state on resizing
-    const handleResize = () => {
-      setShowSearch(false);
-      setInputHover(false);
-    };
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (!currentUser) navigate("/login");
+    });
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    return () => unsubscribe(); // Cleanup function
+  }, [navigate]);
 
-  const toggleMobileMenu = () => {
-    setShowMenu((prevShowMenu) => !prevShowMenu);
+  const handleLinkClick = (link) => {
+    setShowMenu(false); // Hide the menu when a link is clicked
+    // history.push(link);
+
+    setTimeout(() => {
+      navigate(link);
+    }, 300); // Adjust timeout delay as needed
   };
 
   return (
     <div className="relative">
       <nav
-        className={` fixed top-0 z-50 flex w-screen justify-between text-white ease-in-out duration-500  ${
+        className={`fixed top-0 z-50 flex w-screen justify-between text-white ease-in-out duration-500 ${
           isScrolled
             ? "bg-[rgba(0,0,0,1)]"
             : "bg-gradient-to-b from-black to-transparent"
@@ -66,12 +63,16 @@ export default function Navbar({ isScrolled }) {
               return (
                 <li
                   key={name}
-                  onClick={() => setShowMenu(false)}
+                  onClick={() => {
+                    handleLinkClick(link);
+                  }}
                   className={
-                    disabled ? "disabled pointer-events-none opacity-50" : ""
+                    disabled
+                      ? "disabled pointer-events-none opacity-50"
+                      : " cursor-pointer"
                   }
                 >
-                  <Link to={link}>{name}</Link>
+                  {name}
                 </li>
               );
             })}
@@ -117,7 +118,7 @@ export default function Navbar({ isScrolled }) {
 
           {/* Show the hamburger menu icon on small screens */}
           <div className="md:hidden">
-            <button onClick={toggleMobileMenu}>
+            <button onClick={() => setShowMenu(true)}>
               <FaBars />
             </button>
           </div>
