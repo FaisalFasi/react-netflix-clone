@@ -49,7 +49,7 @@ export default function Navbar({ isScrolled }) {
           id="left"
           className=" flex items-center gap-4 lg:gap-12  ml-4 md:ml-8 lg:ml-12  my-2"
         >
-          <div className="w-20 md:w-24 lg:w-36">
+          <div className="w-16 md:w-24 lg:w-28">
             <img src={logo} alt="logo" />
           </div>
           <ul

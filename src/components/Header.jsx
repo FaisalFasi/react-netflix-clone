@@ -1,15 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/vecteezy_netflix-logo.jpg";
 
 export default function Header(props) {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between px-4 md:px-8 lg:px-16 ">
+    <div className="flex items-center justify-between px-4 md:px-8 lg:px-16 pt-4">
       <div className="">
-        <img
-          src="/src/assets/vecteezy_netflix-logo.jpg"
-          alt="logo"
-          className="h-12 bg-transparent"
-        />
+        <img src={logo} alt="logo" className="h-8 md:h-12 bg-transparent" />
       </div>
       <button
         onClick={() => navigate(props.login ? "/login" : "/signup")}
