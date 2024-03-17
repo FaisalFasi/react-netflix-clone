@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useState, useEffect } from "react";
-import logo from "../assets/logo.png";
+import logo from "../assets/vecteezy_netflix-logo.jpg";
 import { FaPowerOff, FaSearch, FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { firebaseAuth } from "../utilities/firebase-configs";
